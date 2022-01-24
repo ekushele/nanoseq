@@ -8,9 +8,8 @@ process GUPPY {
 		container = 'genomicpariscentre/guppy:5.0.16'
 	}
 
-
 	input:
-	path(input_path), stageAs: 'input_path/*'
+	path(input_path), stageAs: 'input_path'
 	val meta
 	path guppy_config
 	path guppy_model
@@ -20,7 +19,6 @@ process GUPPY {
 	tuple val(meta), path("basecalling/*.txt") , emit: summary
 	path "basecalling/*"                       , emit: called
 	path "versions.yml"                        , emit: versions
-
 
 	script:
 	def trim_barcodes = params.trim_barcodes ? "--trim_barcodes" : ""
