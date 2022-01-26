@@ -1,11 +1,7 @@
 process DEMUX_FAST5 {
 	label 'process_medium'
-	publishDir "${params.outdir}",
-		mode: params.publish_dir_mode,
-		saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process)) }
-
 	
-	conda     (params.enable_conda ? "bioconda:ont-fast5-api:4.0.0--pyhdfd78af_0" : null)
+	//conda     (params.enable_conda ? "bioconda:ont-fast5-api:4.0.0--pyhdfd78af_0" : null)
 	if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
 		container "https://depot.galaxyproject.org/singularity/ont-fast5-api:4.0.0--pyhdfd78af_0" 
 	} else {
@@ -21,9 +17,10 @@ process DEMUX_FAST5 {
 	path "versions.yml"            , emit: versions
 
 	script:
+	def fast5_dir_path = workflow.profile.contains('test') ? "input_path" : "$input_path"
 	"""
 	demux_fast5 \\
-	--input  input_path \\
+	--input  $fast5_dir_path  \\
 	--save_path ./demultiplexed_fast5 \\
 	--summary_file $input_summary
 	
