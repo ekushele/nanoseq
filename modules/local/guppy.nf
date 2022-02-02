@@ -36,6 +36,7 @@ process GUPPY {
 		--records_per_fastq 0 \\
 		--compress_fastq \\
 		$barcode_kit \\
+		$trim_barcodes
 		$proc_options \\
 		$barcode_ends \\
 		$config \\
@@ -57,7 +58,7 @@ process GUPPY {
 			cat pass/\$dir/*.fastq.gz > ../fastq/\$dir.fastq.gz
 		done
 	else
-		cat *.fastq.gz > ../fastq/${meta.id}.fastq.gz
+		cat pass/*.fastq.gz > ../fastq/${meta.id}.fastq.gz
 	fi
 	"""
 }
